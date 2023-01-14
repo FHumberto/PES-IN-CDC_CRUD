@@ -1,3 +1,7 @@
+using CDC.Data;
+
+using Microsoft.EntityFrameworkCore;
+
 namespace CDC
 {
     public class Program
@@ -5,9 +9,11 @@ namespace CDC
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            var getDefaultConnection = builder.Configuration.GetConnectionString("DefaultConnection");
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+            builder.Services.AddDbContext<CDCContext>(options => options.UseSqlServer(getDefaultConnection));
 
             var app = builder.Build();
 
