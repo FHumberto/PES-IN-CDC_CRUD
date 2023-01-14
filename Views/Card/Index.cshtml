@@ -1,0 +1,46 @@
+﻿@model IEnumerable<CDC.Models.Card>;
+
+@{
+    ViewData["Title"] = "Cartas Registradas";
+}
+<h1>@ViewData["Title"]</h1>
+
+<p>Aqui estão registradas todas as cartas que tenho em estoque no momento.</p>
+
+<div>
+    <a asp-action="Create" type="button" class="btn btn-primary">Cadastrar Carta</a>
+</div>
+<br />
+
+<table class="table table-hover">
+    <thead class="thead-light">
+        <tr>
+            <th scope="col">@Html.DisplayNameFor(model => model.Color)</th>
+            <th scope="col">@Html.DisplayNameFor(model => model.Type)</th>
+            <th scope="col">@Html.DisplayNameFor(model => model.Name)</th>
+            <th scope="col">@Html.DisplayNameFor(model => model.IsFoil)</th>
+            <th scope="col">@Html.DisplayNameFor(model => model.Quantity)</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            var isFoil = item.IsFoil ? "Sim" : "Não";
+            <tr>
+                <th scope="row">@Html.DisplayFor(modelItem => item.Color)</th>
+                <th scope="row">@Html.DisplayFor(modelItem => item.Type)</th>
+                <th scope="row">@Html.DisplayFor(modelItem => item.Name)</th>
+                <th scope="row">@Html.DisplayFor(ModelItem => isFoil)</th>
+                <th scope="row">@Html.DisplayFor(modelItem => item.Quantity)</th>
+                <th scope="row">
+                    <div class="btn-group btn-group-sm" role="group">
+                        <a class="btn btn-success" asp-action="Detail" asp-route-id="@item.Id"><i class="bi bi-eye"></i> Detalhes</a>
+                        <a class="btn btn-primary" asp-action="Edit" asp-route-id="@item.Id"><i class="bi bi-pencil-square"></i> Editar</a>
+                        <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id"><i class="bi bi-trash"></i> Deletar</a>
+                    </div>
+                </th>
+            </tr>
+        }
+    </tbody>
+</table>
