@@ -40,10 +40,13 @@
     <div class="mb-3">
         <label asp-for="Type" class="form-label"></label>
         <select asp-for="Type" class="form-select">
-            @foreach (var item in Enum.GetValues(typeof(CType)))
-            {
-                <option value="@item">@item</option>
-            }
+            <option value="0">Artefato</option>
+            <option value="1">Criatura</option>
+            <option value="2">Encantamento</option>
+            <option value="3">Magica Instantânea</option>
+            <option value="4">Terreno</option>
+            <option value="5">Planinalta</option>
+            <option value="6">Feitiço</option>
         </select>
     </div>
 

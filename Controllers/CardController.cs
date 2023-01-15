@@ -2,17 +2,22 @@
 using CDC.Models;
 
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+
+using NToastNotify;
 
 namespace CDC.Controllers
 {
     public class CardController : Controller
     {
+        private readonly IToastNotification _toastNotification;
         private readonly CDCContext _context;
 
         //injeção de dependência
-        public CardController(CDCContext context)
+        public CardController(CDCContext context, IToastNotification toastNotification)
         {
             _context = context;
+            _toastNotification = toastNotification;
         }
 
         public IActionResult Index()
@@ -48,15 +53,17 @@ namespace CDC.Controllers
                 {
                     _context.Add(card);
                     _context.SaveChanges();
+                    _toastNotification.AddSuccessToastMessage("Carta cadastrada");
                     return RedirectToAction(nameof(Index));
                 }
             }
             else
             {
-                TempData["Mensagem"] = "A carta informada já existe no banco de dados.";
+                _toastNotification.AddErrorToastMessage("A carta informada já existe no banco de dados.");
             }
-            return View(card);
+            return RedirectToAction(nameof(Create));
         }
+
         public IActionResult Detail(int? id)
         {
             if (id == null)
@@ -71,6 +78,66 @@ namespace CDC.Controllers
                 return NotFound();
             }
 
+            return View(card);
+        }
+
+        public IActionResult Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var card = _context.Cards.FirstOrDefault(bd => bd.Id == id);
+
+            if (card == null)
+            {
+                return NotFound();
+            }
+
+            return View(card);
+        }
+
+        [HttpPost, ActionName("Edit")]
+        [ValidateAntiForgeryToken]
+        public IActionResult EditComfirmed(int? id, Card card, string[]? color)
+        {
+            if (id != card.Id)
+            {
+                return NotFound();
+            }
+
+            if (color == null || color.Length == 0)
+            {
+                card.Color = "Incolor";
+            }
+            else
+            {
+                card.Color = string.Join(",", color);
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(card);
+                    _toastNotification.AddSuccessToastMessage("Carta editada");
+                    _context.SaveChanges();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+
+                    if (!_context.Cards.Any(item => item.Id == card.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
             return View(card);
         }
 
@@ -106,6 +173,7 @@ namespace CDC.Controllers
             }
 
             _context.SaveChanges();
+            _toastNotification.AddSuccessToastMessage("Carta removida");
             return RedirectToAction(nameof(Index));
         }
     }

@@ -14,6 +14,7 @@ namespace CDC
             // Add services to the container.
             builder.Services.AddControllersWithViews();
             builder.Services.AddDbContext<CDCContext>(options => options.UseSqlServer(getDefaultConnection));
+            builder.Services.AddMvc().AddNToastNotifyToastr();
 
             var app = builder.Build();
 
@@ -24,6 +25,8 @@ namespace CDC
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            app.UseNToastNotify();
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
