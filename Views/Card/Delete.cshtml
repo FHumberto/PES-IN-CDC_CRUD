@@ -1,0 +1,51 @@
+﻿@model CDC.Models.Card;
+
+@{
+    ViewData["Title"] = "Remover Carta";
+    var isFoil = (Model.IsFoil) ? "Sim" : "Não";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<p>Você tem certeza que deseja remover o <strong>@Html.DisplayFor(model => model.Name)</strong> do banco de dados?</p>
+
+<hr class="hr" />
+
+
+<dl class="row my-1">
+    <dt class="col-sm-2 text-end bg-dark bg-opacity-10">@Html.DisplayNameFor(model => model.Color)</dt>
+    <dd class="col-sm-10 fw-bold">@Html.DisplayFor(model => model.Color)</dd>
+</dl>
+<dl class="row my-1">
+    <dt class="col-sm-2 text-end bg-dark bg-opacity-10">@Html.DisplayNameFor(model => model.Type)</dt>
+    <dd class="col-sm-10 fw-bold">@Html.DisplayFor(model => model.Type)</dd>
+</dl>
+<dl class="row my-1">
+    <dt class="col-sm-2 text-end bg-dark bg-opacity-10">@Html.DisplayNameFor(model => model.Name)</dt>
+    <dd class="col-sm-10 fw-bold">@Html.DisplayFor(model => model.Name)</dd>
+</dl>
+<dl class="row my-1">
+    <dt class="col-sm-2 text-end bg-dark bg-opacity-10">@Html.DisplayNameFor(model => model.Set)</dt>
+    <dd class="col-sm-10 fw-bold">@Html.DisplayFor(model => model.Set)</dd>
+</dl>
+<dl class="row my-1">
+    <dt class="col-sm-2 text-end bg-dark bg-opacity-10">@Html.DisplayNameFor(model => model.IsFoil)</dt>
+    <dd class="col-sm-10 fw-bold">@isFoil</dd>
+</dl>
+<dl class="row my-1">
+    <dt class="col-sm-2 text-end  bg-dark bg-opacity-10">@Html.DisplayNameFor(model => model.Condition)</dt>
+    <dd class="col-sm-10 fw-bold">@Html.DisplayFor(model => model.Condition)</dd>
+</dl>
+<dl class="row my-1">
+    <dt class="col-sm-2 text-end bg-dark bg-opacity-10">@Html.DisplayNameFor(model => model.Quantity)</dt>
+    <dd class="col-sm-10 fw-bold">@Html.DisplayFor(model => model.Quantity)</dd>
+</dl>
+<hr class="hr" />
+
+<form asp-action="Delete">
+    <input type="hidden" asp-for="Id" />
+    <div>
+        <a class="btn btn-outline-secondary" asp-action="Index">Voltar para a Lista</a>
+        <input type="submit" class="btn btn-danger" value="Deletar">
+    </div>
+</form>

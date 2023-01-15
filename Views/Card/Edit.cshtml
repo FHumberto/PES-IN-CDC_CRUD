@@ -1,0 +1,108 @@
+﻿@model CDC.Models.Card;
+@using CDC.Models.Enums;
+
+@{
+    ViewData["Title"] = "Editar Carta";
+
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<p>Insira os dados que deseja alterar.</p>
+
+@if (TempData["Mensagem"] == null)
+{
+    <br />
+    <div class="toast alert alert-danger" role="alert">
+        @TempData["Mensagem"]
+    </div>
+    <br />
+}
+
+<form asp-action="Edit">
+    <input type="hidden" asp-for="Id" />
+    <div class="mb-3">
+        <label class="form-label">@Html.DisplayNameFor(model => model.Color)</label>
+        <div class="btn-group d-flex" role="group" aria-label="Basic checkbox toggle button group">
+            <input type="checkbox" class="btn-check" id="btncheck1" name="color" value="Branco" autocomplete="off" @(Model.Color.Contains("Branco") ? "checked" : "")>
+            <label class="btn btn-outline-secondary" for="btncheck1">Branco</label>
+
+            <input type="checkbox" class="btn-check" id="btncheck2" name="color" value="Azul" autocomplete="off" @(Model.Color.Contains("Azul") ? "checked" : "")>
+            <label class="btn btn-outline-primary" for="btncheck2">Azul</label>
+
+            <input type="checkbox" class="btn-check" id="btncheck3" name="color" Value="Preto" autocomplete="off" @(Model.Color.Contains("Preto") ? "checked" : "")>
+            <label class="btn btn-outline-dark" for="btncheck3">Preto</label>
+
+            <input type="checkbox" class="btn-check" id="btncheck4" name="color" Value="Vermelho" autocomplete="off" @(Model.Color.Contains("Vermelho") ? "checked" : "")>
+            <label class="btn btn-outline-danger" for="btncheck4">Vermelho</label>
+
+            <input type="checkbox" class="btn-check" id="btncheck5" name="color" Value="Verde" autocomplete="off" @(Model.Color.Contains("Verde") ? "checked" : "")>
+            <label class="btn btn-outline-success" for="btncheck5">Verde</label>
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Img" class="form-label"></label>
+        <input asp-for="Img" class="form-control" placeholder="https://">
+        <span asp-validation-for="Img" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Type" class="form-label"></label>
+        <select asp-for="Type" class="form-select">
+            <option value="0">Artefato</option>
+            <option value="1">Criatura</option>
+            <option value="2">Encantamento</option>
+            <option value="3">Magica Instantânea</option>
+            <option value="4">Terreno</option>
+            <option value="5">Planinalta</option>
+            <option value="6">Feitiço</option>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Name" class="form-label">Nome</label>
+        <input asp-for="Name" class="form-control">
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Set" class="form-label">Coleção</label>
+        <input asp-for="Set" class="form-control">
+        <span asp-validation-for="Set" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="IsFoil" class="form-label">É Foil?</label>
+        <select asp-for="IsFoil" class="form-select">
+            <option value="false">Não</option>
+            <option value="true">Sim</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Condition" class="form-label">Condição</label>
+        <select asp-for="Condition" class="form-select">
+            @foreach (var item in Enum.GetValues(typeof(CCondition)))
+            {
+                <option value="@item">@item</option>
+            }
+        </select>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Quantity" class="form-label">Quantidade</label>
+        <input asp-for="Quantity" class="form-control">
+        <span asp-validation-for="Quantity" class="text-danger"></span>
+    </div>
+    <div>
+        <button type="submit" Class="btn btn-primary">Enviar</button>
+        <a class="btn btn-outline-secondary" asp-action="Index">Voltar para a Lista</a>
+    </div>
+</form>
+
+@section Scripts
+    {
+        <script>
+            toast.show()
+        </script>
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
