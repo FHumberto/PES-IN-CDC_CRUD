@@ -27,6 +27,10 @@ namespace CDC.Models
         [Required(ErrorMessage = "O campo de {0} é obrigatório."), Display(Name = "Condição")]
         public CCondition Condition { get; set; }
 
+        [Display(Name = "Arte"), StringLength(150)]
+        [Url(ErrorMessage = "Insira um endereço http, https ou ftp válido.")]
+        public string? Img { get; set; }
+
         [Required(ErrorMessage = "O campo de {0} é obrigatório."), Display(Name = "Qtd")]
         [Range(0, int.MaxValue, ErrorMessage = "A {0} deve estar entre {1} e {2}.")]
         public int Quantity { get; set; }
