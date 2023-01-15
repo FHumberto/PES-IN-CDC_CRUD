@@ -57,9 +57,21 @@ namespace CDC.Controllers
             }
             return View(card);
         }
-        public IActionResult Details()
+        public IActionResult Detail(int? id)
         {
-            return View();
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var card = _context.Cards.FirstOrDefault(bd => bd.Id == id);
+
+            if (card == null)
+            {
+                return NotFound();
+            }
+
+            return View(card);
         }
 
         public IActionResult Delete(int? id)
