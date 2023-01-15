@@ -38,14 +38,12 @@ namespace CDC.Controllers
                 card.Color = string.Join(",", color);
             }
 
-            // Verifica se o elemento já existe no banco de dados
             var cardData = _context.Cards
                 .Where(bd => bd.Color == card.Color && bd.Type == card.Type && bd.Name == card.Name && bd.Set == card.Set && bd.IsFoil == card.IsFoil && bd.Condition == card.Condition)
                 .FirstOrDefault();
 
             if (cardData == null)
             {
-                // verifica se o modelo é válido
                 if (ModelState.IsValid)
                 {
                     _context.Add(card);
@@ -55,7 +53,6 @@ namespace CDC.Controllers
             }
             else
             {
-                // envia a notificação para a interface
                 TempData["Mensagem"] = "A carta informada já existe no banco de dados.";
             }
             return View(card);
@@ -65,9 +62,39 @@ namespace CDC.Controllers
             return View();
         }
 
-        public IActionResult Delete()
+        public IActionResult Delete(int? id)
         {
-            return View();
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var card = _context.Cards.FirstOrDefault(bd => bd.Id == id);
+
+            if (card == null)
+            {
+                return NotFound();
+            }
+
+            return View(card);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteConfirmed(int? id)
+        {
+            if (_context.Cards == null)
+            {
+                return Problem("Entity set 'NamesPace.Modelo' is null.");
+            }
+            var card = _context.Cards.Find(id);
+            if (card != null)
+            {
+                _context.Cards.Remove(card);
+            }
+
+            _context.SaveChanges();
+            return RedirectToAction(nameof(Index));
         }
     }
 }

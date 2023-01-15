@@ -72,8 +72,10 @@
         <input asp-for="Quantity" class="form-control">
         <span asp-validation-for="Quantity" class="text-danger"></span>
     </div>
-    <button type="submit" Class="btn btn-primary">Enviar</button>
-    <a class="btn btn-secondary" asp-action="Index">Voltar para a Lista</a>
+    <div>
+        <button type="submit" Class="btn btn-primary">Enviar</button>
+        <a class="btn btn-outline-secondary" asp-action="Index">Voltar para a Lista</a>
+    </div>
 </form>
 
 @section Scripts
