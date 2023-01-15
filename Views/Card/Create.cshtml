@@ -7,7 +7,7 @@
 
 <h2>@ViewData["Title"]</h2>
 
-<p>Insira os dados da carta a ser cadastrada.</p>
+<p>Insira os dados da carta.</p>
 
 <form asp-action="Create">
     <div class="mb-3">
@@ -29,6 +29,12 @@
             <input type="checkbox" class="btn-check" id="btncheck5" name="color" Value="Verde" autocomplete="off">
             <label class="btn btn-outline-success" for="btncheck5">Verde</label>
         </div>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Img" class="form-label"></label>
+        <input asp-for="Img" class="form-control" placeholder="https://">
+        <span asp-validation-for="Img" class="text-danger"></span>
     </div>
 
     <div class="mb-3">
