@@ -1,0 +1,6 @@
+﻿{
+  "name": "Catálogo de Cartas",
+  "demo": "https://raw.githubusercontent.com/FHumberto/PES-IN-CRUD_CDC/main/project/demo.gif",
+  "tech": "C#, .NET 6.0, Entity Framework, Microsoft SQL Server e Bootstrap 5",
+  "description": "Projeto interno de CRUD simples que faz a listagem, cadastro, leitura ou remoção de cartas. Desenvolvido com o propósito de catalogar minhas cartas de magic – the gathering."
+}
