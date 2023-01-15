@@ -9,7 +9,7 @@ namespace CDC.Models
         [Key]
         public int Id { get; set; }
 
-        [Required(ErrorMessage = "O campo de {0} é obrigatório."), Display(Name = "Cor")]
+        [Display(Name = "Cor")]
         public string? Color { get; set; }
 
         [Required(ErrorMessage = "O campo de {0} é obrigatório."), Display(Name = "Tipo")]
