@@ -10,15 +10,6 @@
 
 <p>Insira os dados que deseja alterar.</p>
 
-@if (TempData["Mensagem"] == null)
-{
-    <br />
-    <div class="toast alert alert-danger" role="alert">
-        @TempData["Mensagem"]
-    </div>
-    <br />
-}
-
 <form asp-action="Edit">
     <input type="hidden" asp-for="Id" />
     <div class="mb-3">
@@ -99,9 +90,6 @@
 
 @section Scripts
     {
-        <script>
-            toast.show()
-        </script>
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
