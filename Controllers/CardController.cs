@@ -1,5 +1,8 @@
-﻿using CDC.Data;
+﻿using System.Diagnostics;
+
+using CDC.Data;
 using CDC.Models;
+using CDC.Models.ViewModels;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -34,14 +37,8 @@ namespace CDC.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(Card card, string[]? color)
         {
-            if (color == null || color.Length == 0)
-            {
-                card.Color = "Incolor";
-            }
-            else
-            {
-                card.Color = string.Join(",", color);
-            }
+            // PEGA OS VALORES DOS CHECKBOX E MONTA UMA STRING
+            ColorHandler(card, color);
 
             var cardData = _context.Cards
                 .Where(bd => bd.Color == card.Color && bd.Type == card.Type && bd.Name == card.Name && bd.Set == card.Set && bd.IsFoil == card.IsFoil && bd.Condition == card.Condition)
@@ -66,36 +63,12 @@ namespace CDC.Controllers
 
         public IActionResult Detail(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var card = _context.Cards.FirstOrDefault(bd => bd.Id == id);
-
-            if (card == null)
-            {
-                return NotFound();
-            }
-
-            return View(card);
+            return SearchCard(id);
         }
 
         public IActionResult Edit(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var card = _context.Cards.FirstOrDefault(bd => bd.Id == id);
-
-            if (card == null)
-            {
-                return NotFound();
-            }
-
-            return View(card);
+            return SearchCard(id);
         }
 
         [HttpPost, ActionName("Edit")]
@@ -107,14 +80,8 @@ namespace CDC.Controllers
                 return NotFound();
             }
 
-            if (color == null || color.Length == 0)
-            {
-                card.Color = "Incolor";
-            }
-            else
-            {
-                card.Color = string.Join(",", color);
-            }
+            // PEGA OS VALORES DOS CHECKBOX E MONTA UMA STRING
+            ColorHandler(card, color);
 
             if (ModelState.IsValid)
             {
@@ -143,19 +110,7 @@ namespace CDC.Controllers
 
         public IActionResult Delete(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var card = _context.Cards.FirstOrDefault(bd => bd.Id == id);
-
-            if (card == null)
-            {
-                return NotFound();
-            }
-
-            return View(card);
+            return SearchCard(id);
         }
 
         [HttpPost, ActionName("Delete")]
@@ -175,6 +130,42 @@ namespace CDC.Controllers
             _context.SaveChanges();
             _toastNotification.AddSuccessToastMessage("Carta removida");
             return RedirectToAction(nameof(Index));
+        }
+
+        // FUNÇÕES UTILITÁRIAS
+        private IActionResult SearchCard(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var card = _context.Cards.FirstOrDefault(bd => bd.Id == id);
+
+            if (card == null)
+            {
+                return NotFound();
+            }
+
+            return View(card);
+        }
+
+        private static void ColorHandler(Card card, string[]? color)
+        {
+            if (color == null || color.Length == 0)
+            {
+                card.Color = "Incolor";
+            }
+            else
+            {
+                card.Color = string.Join(",", color);
+            }
+        }
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
 }
